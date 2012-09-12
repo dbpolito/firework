@@ -31,6 +31,7 @@ class Benchmark
         }
 
         static::$active = $key;
+        $label = $label ?: 'Mark '.(count(static::$index)+1);
 
         $mark = array(
             'label' => $label,

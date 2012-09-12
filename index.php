@@ -8,13 +8,13 @@ Benchmark::start('Starting Benchmark');
 
     Benchmark::start('For\'s Benchmark');
 
-        Benchmark::start('For 1');
+        Benchmark::start('Pos-increment');
         for ($i=1;$i<10000;$i++) {
             // Do something
         }
         Benchmark::end();
 
-        Benchmark::start('For 2');
+        Benchmark::start('Pre-increment');
         for ($i=1;$i<10000;++$i) {
             // Do something
         }
@@ -24,20 +24,23 @@ Benchmark::start('Starting Benchmark');
 
     Benchmark::start('While\'s Benchmark');
 
-        Benchmark::start('While 1');
+        Benchmark::start('Pos-increment');
         $i = 1;
         while ($i<10000) {
             $i++;
         }
         Benchmark::end();
 
-        Benchmark::start('While 2');
+        Benchmark::start('Pre-increment');
         $i = 1;
         while ($i<10000) {
             ++$i;
         }
         Benchmark::end();
 
+    Benchmark::end();
+
+    Benchmark::start();
     Benchmark::end();
 
 Benchmark::end();
