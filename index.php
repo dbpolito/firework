@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/src/Firework/Firework.php';
+require __DIR__.'/src/Firework/Benchmark.php';
 
 use \Firework\Benchmark;
 
