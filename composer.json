@@ -1,6 +1,6 @@
 {
     "name": "firework/benchmark",
     "require": {
-        "php": ">=5.2.0",
+        "php": ">=5.2.0"
     }
 }
