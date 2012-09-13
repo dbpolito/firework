@@ -78,9 +78,14 @@ Benchmark::end();
     <div class="hero-unit">
         <h1>Firework - Benchmark</h1>
         <p>A powerfull component that helps you benchmark your code easily</p>
-        <a class="btn btn-primary btn-large">Learn more</a>
     </div>
-    <table class="table table-bordered table-striped table-hover">
+</div>
+
+<div id="firework">
+    <div class="row">
+        <a id="btn-firework" class="btn pull-right"><i class="icon-arrow-up"></i> Benchmark</a>
+    </div>
+    <table id="benchmark" class="table table-bordered table-striped table-hover hide">
         <thead>
             <tr>
                 <th>Label</th>
@@ -94,5 +99,28 @@ Benchmark::end();
         </tbody>
     </table>
 </div>
+
+<style>
+#firework {width:100%; position: absolute; bottom: 0; background-color: #fff;}
+.nav { margin-bottom: 0; }
+</style>
+
+<script src="http://rc.getbootstrap.com/assets/js/jquery.js"></script>
+<script>
+var firework = 0;
+$('#btn-firework').click(function(e) {
+    e.preventDefault()
+
+    if(firework === 0) {
+        firework = 1
+        $('#benchmark').slideDown()
+        $(this).find('i').removeClass('icon-arrow-up').addClass('icon-arrow-down')
+    } else {
+        firework = 0
+        $('#benchmark').slideUp()
+        $(this).find('i').removeClass('icon-arrow-down').addClass('icon-arrow-up')
+    }
+})
+</script>
 </body>
 </html>

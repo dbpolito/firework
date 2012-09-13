@@ -21,7 +21,6 @@ class Benchmark
             $key = static::$active.'.marks';
             if (($keys = static::getArrayValue(static::$marks, $key)) !== null)
             {
-                $keys = array_keys($keys);
                 $key .= '.'.count($keys);
             }
             else
