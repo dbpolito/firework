@@ -198,8 +198,9 @@ class Benchmark
             <script>
             var firework = 0;
             function showFirework() {
-                document.getElementById("fw-benchmark").className = (firework === 0) ? "" : "hide"
-                firework = (firework === 0) ? 1 : 0
+                document.getElementById("fw-benchmark").className = (firework === 0) ? "" : "hide";
+                firework = (firework === 0) ? 1 : 0;
+                return false;
             }
             </script>';
 
