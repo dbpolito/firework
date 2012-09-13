@@ -154,7 +154,7 @@ class Benchmark
     public static function toHtml()
     {
         $html = '<style type="text/css">
-            #firework {width:99%;position:absolute;bottom:0;background-color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333;background-color:#fff;}
+            #firework {width:99%;position:fixed;bottom:0;background-color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333;background-color:#fff;}
             #fw-btn {color:#333;background-color:#eee;padding:10px 15px;text-decoration:none;display:inline-block;border:2px solid #ddd;border-bottom-color:#eee;font-weight:bold;}
             #fw-wrapper {max-height:300px; overflow:auto;margin-top:-3px;}
             #fw-benchmark {width:100%;text-align:left;border-collapse:collapse;border:2px solid #ddd;}
@@ -163,7 +163,7 @@ class Benchmark
             .hide {display:none;}
             </style>
             <div id="firework">
-                <a id="fw-btn" href="#" onclick="showFirework()">Benchmark</a>
+                <a id="fw-btn" href="#" onclick="showFirework();return false;">Benchmark</a>
                 <div id="fw-wrapper">
                     <table id="fw-benchmark" class="hide">
                         <thead>
@@ -200,7 +200,6 @@ class Benchmark
             function showFirework() {
                 document.getElementById("fw-benchmark").className = (firework === 0) ? "" : "hide";
                 firework = (firework === 0) ? 1 : 0;
-                return false;
             }
             </script>';
 
