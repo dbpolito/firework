@@ -153,19 +153,56 @@ class Benchmark
      */
     public static function toHtml()
     {
+        $html = '<style type="text/css">
+            #firework {width:99%;position:absolute;bottom:0;background-color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333;background-color:#fff;}
+            #fw-btn {color:#333;background-color:#eee;padding:10px 15px;text-decoration:none;display:inline-block;border:2px solid #ddd;border-bottom-color:#eee;font-weight:bold;}
+            #fw-wrapper {max-height:300px; overflow:auto;margin-top:-3px;}
+            #fw-benchmark {width:100%;text-align:left;border-collapse:collapse;border:2px solid #ddd;}
+            #fw-benchmark th {background-color:#eee;}
+            #fw-benchmark th, #fw-benchmark td {padding:10px;border:2px solid #ddd;}
+            .hide {display:none;}
+            </style>
+            <div id="firework">
+                <a id="fw-btn" href="#" onclick="showFirework()">Benchmark</a>
+                <div id="fw-wrapper">
+                    <table id="fw-benchmark" class="hide">
+                        <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Elapsed Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
         foreach (static::$index as $key => $velue) {
             $indent = substr_count($key, '.') * static::$config['indent_size'];
             $mark = static::getArrayValue(static::$marks, $key);
-            ?>
-            <tr>
-                <td style="text-indent:<?php echo $indent; ?>px">
-                    <?php echo $mark['label']; ?>
+
+            $html .= '<tr>
+                <td style="text-indent:'.$indent.'px">
+                    '.$mark['label'].'
                 </td>
-                <td><?php echo $mark['start']; ?></td>
-                <td><?php echo $mark['end']; ?></td>
-                <td><?php echo number_format($mark['end']-$mark['start'], 4); ?>µs</td>
-            </tr>
-            <?php
+                <td>'.$mark['start'].'</td>
+                <td>'.$mark['end'].'</td>
+                <td>'.number_format($mark['end']-$mark['start'], 4).'µs</td>
+            </tr>';
+
         }
+
+        $html .= '</tbody>
+                    </table>
+                </div>
+            </div>
+            <script>
+            var firework = 0;
+            function showFirework() {
+                document.getElementById("fw-benchmark").className = (firework === 0) ? "" : "hide"
+                firework = (firework === 0) ? 1 : 0
+            }
+            </script>';
+
+        return $html;
     }
 }
