@@ -21,9 +21,17 @@ class Benchmark
 
     /**
      * Active Mark
-     * @var [type]
+     * @var null|string
      */
     protected static $active = null;
+
+    /**
+     * Configuration
+     * @var [type]
+     */
+    protected static $config = array(
+        'indent_size' => 15
+    );
 
     /**
      * Start a Mark
@@ -33,19 +41,14 @@ class Benchmark
      */
     public static function start($label = null)
     {
-        if (static::$active === null)
-        {
+        if (static::$active === null) {
             $key = '0';
-        }
-        else
-        {
+        } else {
             $key = static::$active.'.marks';
-            if (($keys = static::getArrayValue(static::$marks, $key)) !== null)
-            {
+
+            if (($keys = static::getArrayValue(static::$marks, $key)) !== null) {
                 $key .= '.'.count($keys);
-            }
-            else
-            {
+            } else {
                 $key .= '.0';
             }
         }
@@ -150,18 +153,19 @@ class Benchmark
      */
     public static function toHtml()
     {
-        foreach (static::$index as $key => $velue)
-        {
-            $indent = substr_count($key, '.');
+        foreach (static::$index as $key => $velue) {
+            $indent = substr_count($key, '.') * static::$config['indent_size'];
             $mark = static::getArrayValue(static::$marks, $key);
-        ?>
-        <tr>
-            <td style="text-indent:<?php echo $indent*15; ?>px"><?php echo $mark['label']; ?></td>
-            <td><?php echo $mark['start']; ?></td>
-            <td><?php echo $mark['end']; ?></td>
-            <td><?php echo number_format($mark['end']-$mark['start'], 4); ?>µs</td>
-        </tr>
-        <?php
+            ?>
+            <tr>
+                <td style="text-indent:<?php echo $indent; ?>px">
+                    <?php echo $mark['label']; ?>
+                </td>
+                <td><?php echo $mark['start']; ?></td>
+                <td><?php echo $mark['end']; ?></td>
+                <td><?php echo number_format($mark['end']-$mark['start'], 4); ?>µs</td>
+            </tr>
+            <?php
         }
     }
 }
