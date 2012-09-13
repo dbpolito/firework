@@ -1,15 +1,36 @@
 <?php
 namespace Firework;
 
+/**
+ * A dead simple but powerfull tool that helps you to benchmark your application.
+ */
 class Benchmark
 {
 
+    /**
+     * Marks of your application
+     * @var array
+     */
     protected static $marks = array();
 
+    /**
+     * Mark indexes to make it easier to manipulate
+     * @var array
+     */
     protected static $index = array();
 
+    /**
+     * Active Mark
+     * @var [type]
+     */
     protected static $active = null;
 
+    /**
+     * Start a Mark
+     * @param  [type] $label A label for your mark
+     *
+     * @return void
+     */
     public static function start($label = null)
     {
         if (static::$active === null)
@@ -44,6 +65,11 @@ class Benchmark
         static::setArrayValue(static::$marks, $key, $mark);
     }
 
+    /**
+     * End a Started Mark
+     *
+     * @return void
+     */
     public static function end()
     {
         if (static::$active === null) {
@@ -59,11 +85,22 @@ class Benchmark
         static::$active = implode('.', $active);
     }
 
+    /**
+     * Get the current timestamp
+     * @return int timestamp
+     */
     protected static function getTime()
     {
         return microtime(true);
     }
 
+    /**
+     * A helper to iterate arrays with .`s
+     * @param  array  $array The array
+     * @param  string $key   The index
+     *
+     * @return mixed  The value of the array index
+     */
     protected static function getArrayValue($array, $key)
     {
         if (! is_array($array) and ! $array instanceof \ArrayAccess) {
@@ -81,6 +118,14 @@ class Benchmark
         return $array;
     }
 
+    /**
+     * A helper to iterate arrays with .`s
+     * @param  array  $array The array
+     * @param  string $key   The key
+     * @param  mixed  $value The value
+     *
+     * @return void
+     */
     protected static function setArrayValue(&$array, $key, $value = null)
     {
         if ( ! is_array($array) and ! $array instanceof \ArrayAccess) {
@@ -98,6 +143,11 @@ class Benchmark
         $array = $value;
     }
 
+    /**
+     * Temporaty function to generate the HTML of the Benchmark
+     *
+     * @return string The html
+     */
     public static function toHtml()
     {
         foreach (static::$index as $key => $velue)
