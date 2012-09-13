@@ -1,6 +1,11 @@
 {
     "name": "firework/benchmark",
+    "description": "A dead simple but powerfull tool that helps you to benchmark your application.",
+    "keywords": ["bench", "benchmark", "profiler"],
     "require": {
         "php": ">=5.2.0"
-    }
+    },
+    "autoload": {
+        "psr-0": {"Firework\\Benchmark": "src/"}
+    },
 }
