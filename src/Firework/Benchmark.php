@@ -42,7 +42,7 @@ class Benchmark
     public static function start($label = null)
     {
         if (static::$active === null) {
-            $key = '0';
+            $key = count(static::$marks);
         } else {
             $key = static::$active.'.marks';
 
@@ -64,7 +64,6 @@ class Benchmark
         );
 
         static::$index[$key] = $label;
-
         static::setArrayValue(static::$marks, $key, $mark);
     }
 
@@ -82,10 +81,9 @@ class Benchmark
         static::setArrayValue(static::$marks, static::$active.'.end', static::getTime());
 
         $active = explode('.', static::$active);
-        array_pop($active);
-        array_pop($active);
+        $active = array_slice($active, 0, -2);
 
-        static::$active = implode('.', $active);
+        static::$active = !empty($active) ? implode('.', $active) : null;
     }
 
     /**
@@ -146,6 +144,32 @@ class Benchmark
         $array = $value;
     }
 
+    protected function generateTableContent($marks = array(), $parents = array(), $level = 0)
+    {
+        $output = '';
+
+        foreach ($marks as $key => $mark) {
+            $_parents = array_merge($parents, array($key));
+            $elapsed  = ($mark['end']-$mark['start'])*1000;
+            $indent   = $level * static::$config['indent_size'];
+
+            $output .= '<tr class="'.implode('_', $parents).($level > 0 ? ' hide' : '').'">
+                <td style="text-indent:'.$indent.'px">
+                    '.($mark['marks'] !== null ? '<a href="#" class="fw-toggle" onclick="toggleFirework(this, \''.implode('_', $_parents).'\');return false;">+</a>&nbsp;&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;').$mark['label'].'
+                </td>
+                <td>'.$mark['start'].'</td>
+                <td>'.$mark['end'].'</td>
+                <td>'.number_format($elapsed, 0).' ms</td>
+            </tr>';
+
+            if ($mark['marks'] !== null) {
+                $output  .= static::generateTableContent($mark['marks'], $_parents, $level+1);
+            }
+        }
+
+        return $output;
+    }
+
     /**
      * Temporaty function to generate the HTML of the Benchmark
      *
@@ -156,10 +180,12 @@ class Benchmark
         $html = '<style type="text/css">
             #firework {width:99%;position:fixed;bottom:0;background-color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333;background-color:#fff;}
             #fw-btn {color:#333;background-color:#eee;padding:10px 15px;text-decoration:none;display:inline-block;border:2px solid #ddd;border-bottom-color:#eee;font-weight:bold;}
-            #fw-wrapper {max-height:300px; overflow:auto;margin-top:-3px;}
+            #fw-wrapper {max-height:300px; overflow:auto;margin-top:-3px;-moz-box-shadow: 0 0 20px #ccc;-webkit-box-shadow: 0 0 20px #ccc;box-shadow: 0 0 20px #ccc;}
             #fw-benchmark {width:100%;text-align:left;border-collapse:collapse;border:2px solid #ddd;}
             #fw-benchmark th {background-color:#eee;}
+            #fw-benchmark tr:hover {background-color:#f6f6f6;}
             #fw-benchmark th, #fw-benchmark td {padding:10px;border:2px solid #ddd;}
+            #fw-benchmark .fw-toggle {color:#333;text-decoration:none;font-weight:bold;}
             .hide {display:none;}
             </style>
             <div id="firework">
@@ -176,19 +202,10 @@ class Benchmark
                         </thead>
                         <tbody>';
 
-        foreach (static::$index as $key => $velue) {
-            $indent = substr_count($key, '.') * static::$config['indent_size'];
-            $mark = static::getArrayValue(static::$marks, $key);
-
-            $html .= '<tr>
-                <td style="text-indent:'.$indent.'px">
-                    '.$mark['label'].'
-                </td>
-                <td>'.$mark['start'].'</td>
-                <td>'.$mark['end'].'</td>
-                <td>'.number_format($mark['end']-$mark['start'], 4).'µs</td>
-            </tr>';
-
+        if (! empty(static::$index)) {
+            $html .= static::generateTableContent(static::$marks);
+        } else {
+            $html .= '<tr><td colspan="4">There is no mark to show.</td></tr>';
         }
 
         $html .= '</tbody>
@@ -200,6 +217,22 @@ class Benchmark
             function showFirework() {
                 document.getElementById("fw-benchmark").className = (firework === 0) ? "" : "hide";
                 firework = (firework === 0) ? 1 : 0;
+            }
+            function toggleFirework(e, rel) {
+                var tmp = document.getElementsByClassName(rel.toString());
+                if (e.innerHTML == "+") {
+                    for (var i = 0; i < tmp.length; i++) {
+                        tmp[i].className = tmp[i].className.replace(" hide", "");
+                    }
+
+                    e.innerHTML = "-";
+                } else {
+                    for (var i = 0; i < tmp.length; i++) {
+                        tmp[i].className = tmp[i].className + " hide";
+                    }
+
+                    e.innerHTML = "+";
+                }
             }
             </script>';
 
