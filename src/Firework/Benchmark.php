@@ -144,7 +144,7 @@ class Benchmark
         $array = $value;
     }
 
-    protected function generateTableContent($marks = array(), $parents = array(), $level = 0)
+    protected static function generateTableContent($marks = array(), $parents = array(), $level = 0)
     {
         $output = '';
 
