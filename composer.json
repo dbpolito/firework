@@ -2,6 +2,7 @@
     "name": "firework/benchmark",
     "description": "A dead simple but powerfull tool that helps you to benchmark your application.",
     "keywords": ["bench", "benchmark", "profiler"],
+    "license": "MIT",
     "require": {
         "php": ">=5.2.0"
     },
